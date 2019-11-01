@@ -57,6 +57,7 @@ RUN pip install --no-cache --upgrade \
         mxnet-cu100mkl==$MX_VERSION \
         keras-mxnet==2.2.4.1 \
         h5py==2.9.0 \
+        opencv-python \
         gluoncv>=0.5.0 \
         numpy==1.17.2 \
         onnx==1.4.1 \
@@ -65,8 +66,11 @@ RUN pip install --no-cache --upgrade \
         requests==2.21.0 \
         scikit-learn==0.20.3 \
         scipy==1.2.1 \
+        Cython \
         /sagemaker_mxnet_container-3.1.2.tar.gz && \
     rm /sagemaker_mxnet_container-3.1.2.tar.gz
+
+RUN pip install pycocotools
 
 # "channels first" is recommended for keras-mxnet
 # https://github.com/awslabs/keras-apache-mxnet/blob/master/docs/mxnet_backend/performance_guide.md#channels-first-image-data-format-for-cnn
@@ -89,7 +93,7 @@ ENV SAGEMAKER_TRAINING_MODULE sagemaker_mxnet_container.training:main
 
 ENV PATH="/opt/ml/code:${PATH}"
 
-ENV LD_LIBRARY_PATH="usr/local/cuda-10.0/compat:${LD_LIBRARY_PATH}"
+ENV LD_LIBRARY_PATH="/usr/local/cuda-10.0/compat:${LD_LIBRARY_PATH}"
 
 COPY /simple_pose /opt/ml/code
 
