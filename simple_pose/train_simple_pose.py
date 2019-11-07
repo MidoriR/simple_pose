@@ -19,15 +19,13 @@ from gluoncv.utils.metrics import HeatmapAccuracy
 parser = argparse.ArgumentParser(description='Train a model for image classification.')
 parser.add_argument('--data-dir', type=str, default=os.environ['SM_CHANNEL_TRAINING'],
                     help='training and validation pictures to use.')
-parser.add_argument('--model-dir', default='/opt/ml/model', type=str,
-                    help='Directory where the model will be stored')
-parser.add_argument('--num-joints', type=int, default=17,
+parser.add_argument('--num-joints', type=int, required=True,
                     help='Number of joints to detect')
 parser.add_argument('--batch-size', type=int, default=32,
                     help='training batch size per device (CPU/GPU).')
 parser.add_argument('--dtype', type=str, default='float32',
                     help='data type for training. default is float32')
-parser.add_argument('--num-gpus', type=int, default=0,
+parser.add_argument('--num-gpus', type=int, default=os.environ['SM_NUM_GPUS'],
                     help='number of gpus to use.')
 parser.add_argument('-j', '--num-data-workers', dest='num_workers', default=4, type=int,
                     help='number of preprocessing workers')
@@ -53,7 +51,7 @@ parser.add_argument('--last-gamma', action='store_true',
                     help='whether to init gamma of the last BN layer in each bottleneck to 0.')
 parser.add_argument('--mode', type=str,
                     help='mode in which to train the model. options are symbolic, imperative, hybrid')
-parser.add_argument('--model', type=str, default='simple_pose_resnet18_v1b',
+parser.add_argument('--model', type=str, required=True,
                     help='type of model to use. see vision_model for options.')
 parser.add_argument('--input-size', type=str, default='256,192',
                     help='size of the input image size. default is 256,192')
