@@ -27,7 +27,7 @@ RUN pip install --no-cache --upgrade --ignore-installed\
 RUN pip install pycocotools \
     sagemaker 
 
-ENV MXNET_CUDNN_AUTOTUNE_DEFAULT=0
+#ENV MXNET_CUDNN_AUTOTUNE_DEFAULT=0
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
@@ -43,6 +43,6 @@ COPY /simple_pose /opt/ml/code
 
 ENV SAGEMAKER_SUBMIT_DIRECTORY /opt/ml/code
 
-ENV SAGEMAKER_PROGRAM train_simple_pose-original.py
+ENV SAGEMAKER_PROGRAM train_simple_pose.py
 
 CMD ["/bin/bash"]

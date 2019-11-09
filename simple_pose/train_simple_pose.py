@@ -15,6 +15,8 @@ from gluoncv.utils import makedirs, LRScheduler, LRSequential
 from gluoncv.data.transforms.presets.simple_pose import SimplePoseDefaultTrainTransform
 from gluoncv.utils.metrics import HeatmapAccuracy
 
+#from sagemaker_mxnet_container.training_utils import save
+
 # CLI
 parser = argparse.ArgumentParser(description='Train a model for image classification.')
 parser.add_argument('--data-dir', type=str, default=os.environ['SM_CHANNEL_TRAINING'],
@@ -69,7 +71,7 @@ parser.add_argument('--no-wd', action='store_true',
                     help='whether to remove weight decay on bias, and beta/gamma for batchnorm layers.')
 parser.add_argument('--save-frequency', type=int, default=1,
                     help='frequency of model saving.')
-parser.add_argument('--save-dir', type=str, default='params',
+parser.add_argument('--model-dir', type=str, default=os.environ['SM_MODEL_DIR'],
                     help='directory of saved models')
 parser.add_argument('--log-interval', type=int, default=20,
                     help='Number of batches to wait before logging.')
@@ -162,8 +164,8 @@ if opt.dtype != 'float32':
     optimizer_params['multi_precision'] = True
 
 save_frequency = opt.save_frequency
-if opt.save_dir and save_frequency:
-    save_dir = opt.save_dir
+if opt.model_dir and save_frequency:
+    save_dir = opt.model_dir
     makedirs(save_dir)
 else:
     save_dir = ''
@@ -230,8 +232,6 @@ def train(ctx):
 
     return net
 
-def main():
-    net = train(context)
-
 if __name__ == '__main__':
-    main()
+
+    net = train(context)
