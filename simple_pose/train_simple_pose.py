@@ -231,7 +231,40 @@ def train(ctx):
         trainer.save_states('%s/%s-%d.states'%(save_dir, model_name, opt.num_epochs-1))
 
     return net
+## Saving th model ##
+
+def save(model, model_path):
+    """Save the model to a directory.
+    Parameters
+    ----------
+    model: Returned object from training.
+    model_path: Directory to save the trained model to.
+    
+    Returns
+    -------
+    None.
+
+    """
+    filename = os.path.join(model_path, 'model.params')
+    net.save_parameters(filename)
+    return
+
+### Hosting ###
+
+def model_fn(model_dir):
+    """
+    Load the gluon model. Called once when hosting service starts.
+    :param: model_dir The directory where model files are stored.
+    :return: a model (in this case a Gluon network)
+    """
+
+    net = get_model(model_name, ctx=mx.cpu(), pretrained=False, num_joints=num_joints)
+    net.load_params(f'{model_dir}/model.params', ctx=mx.cpu())
+    return net
+
 
 if __name__ == '__main__':
 
     net = train(context)
+    save(net, opt.model_dir)
+    
