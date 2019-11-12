@@ -12,7 +12,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     openssh-server \
     libatlas-base-dev \
     libcurl4-openssl-dev \
-    libopencv-dev
+    libopencv-dev \
+    nginx
 
 WORKDIR /
 
