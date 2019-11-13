@@ -232,7 +232,7 @@ def train(ctx):
 
     return net
 ## Saving th model ##
-
+'''
 def save(model, model_path):
     """Save the model to a directory.
     Parameters
@@ -262,9 +262,9 @@ def model_fn(model_dir):
     net.load_params(f'{model_dir}/model.params', ctx=mx.cpu())
     return net
 
-
+'''
 if __name__ == '__main__':
 
     net = train(context)
-    save(net, opt.model_dir)
+    #save(net, opt.model_dir)
     
